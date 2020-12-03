@@ -28,7 +28,7 @@ Return :
 		elif str2[i] == "-" :
 			alignement = np.append(alignement,[[ 'add',str1[i] ]] , axis=0)
 			ed+=1
-		else : #str1[i] != #str2[i]
+		else : #str1[i] != str2[i]
 			alignement = np.append(alignement,[[ 'sub',str1[i] ]] , axis=0)
 			ed+=1
 

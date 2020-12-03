@@ -70,6 +70,13 @@ Return :
 	return r
 
 def ed_dp(x='',y='') :
+	'''
+Parameters :
+	x,y : strings
+Return :
+	ed : integer, optimal edit distance between x and y.
+	alignment : array of instructions, to go from y to x.
+	'''
 
 	sum_mat = mat_dp_ed(x,y) + backward_mat_dp_ed(x,y)
 
@@ -92,7 +99,7 @@ def ed_dp(x='',y='') :
 				i-=1
 				j-=1
 			elif sum_mat[j,i] == sum_mat[j-1,i-1] :
-				alignement = np.append([['sub',y[j-1]]],alignement,axis=0)
+				alignement = np.append([['sub',x[i-1]]],alignement,axis=0)
 				i-=1
 				j-=1
 			elif sum_mat[j,i] == sum_mat[j-1,i] :
@@ -101,7 +108,7 @@ def ed_dp(x='',y='') :
 			else : #sum_mat[i,j] == sum_mat[i,j-1] :
 				alignement = np.append([['add',x[i-1]]],alignement,axis=0)
 				i-=1
-	return {"ed" : sum_mat[0,0], "alignement" : alignement}
+	return {"ed" : sum_mat[0,0], "alignment" : alignement}
 
 
 

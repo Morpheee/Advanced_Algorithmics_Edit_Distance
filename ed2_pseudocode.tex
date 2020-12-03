@@ -1,0 +1,85 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{enumerate}
+\usepackage{marvosym}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{fancyhdr}%entt/pdp
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{cancel}
+\usepackage{multicol}
+\usepackage{mdframed}
+%\usepackage{bbold}
+\usepackage[left=1.00cm, right=1.00cm, top=3.00cm, bottom=2.00cm]{geometry}
+\usepackage{chngcntr}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{stmaryrd}
+\usepackage{siunitx}
+
+
+
+\hypersetup{
+	colorlinks=true, %set true if you want colored links
+	linkcolor=black,
+}
+
+% ********** NEWCOMMAND **********
+\newcommand{\p}{\bullet}
+\newcommand{\tab}{\hspace*{0.5cm}}
+\newcommand{\tabb}[1][\hspace*{1cm}]{\hspace*{#1 cm}}
+\newcommand{\vtab}{\vspace*{0.2cm}}
+\newcommand{\vtabb}[1][\vspace*{0.2cm}]{\vspace*{#1cm}}
+
+
+% ********** ENTETE/PIED DE PAGE **********
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Pseudocode}
+\lhead{Advanced Algorithm}
+\rfoot{Page \thepage}
+
+% ********** ALGORITHMS **********
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+\SetKwInput{KwInput}{Input}                % Set the Input
+\SetKwInput{KwOutput}{Output}              % set the Output
+\renewcommand{\l}{$\ell$}
+\newcommand{\la}{$ \leftarrow $}
+
+\begin{document}
+	\begin{algorithm}[H]
+		\KwInput{X, Y}
+\tcc{
+Parameters :\\
+\tab X , Y : strings\\
+Return :\\
+\tab ed : integer, optimal edit distance between X and Y.\\
+\tab alignment : array of instructions, to go from Y to X.\\
+}
+	R \la ed\_dynamic\_mat(X,Y)\tcp{top-left to bottom right}
+	L \la backward\_ed\_dynamic\_mat(X,Y)\tcp{bottom right to top-left}
+	S \la R+L\;
+	ed \la S[0,0]\;
+	alignment \la extract optimal "path" from S.\;
+\tcc{
+The optimal path is one of the possible path which goes from top-left to bottom-rigth cell of S, using only the cells with minimum number (the edit distance).
+}
+	\Return \{ed : ed , alignment : alignment\}
+	\caption{Dynamic\_Programming\_Approach\_Edit\_Distance\_bis}
+	\end{algorithm}	
+\end{document}

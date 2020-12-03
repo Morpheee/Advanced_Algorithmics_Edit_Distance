@@ -1,0 +1,128 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{enumerate}
+\usepackage{marvosym}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{fancyhdr}%entt/pdp
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{cancel}
+\usepackage{multicol}
+\usepackage{mdframed}
+%\usepackage{bbold}
+\usepackage[left=1.00cm, right=1.00cm, top=3.00cm, bottom=2.00cm]{geometry}
+\usepackage{chngcntr}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{stmaryrd}
+\usepackage{siunitx}
+
+
+
+\hypersetup{
+	colorlinks=true, %set true if you want colored links
+	linkcolor=black,
+}
+
+% ********** NEWCOMMAND **********
+\newcommand{\p}{\bullet}
+\newcommand{\tab}{\hspace*{0.5cm}}
+\newcommand{\tabb}[1][\hspace*{1cm}]{\hspace*{#1 cm}}
+\newcommand{\vtab}{\vspace*{0.2cm}}
+\newcommand{\vtabb}[1][\vspace*{0.2cm}]{\vspace*{#1cm}}
+
+
+% ********** ENTETE/PIED DE PAGE **********
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Pseudocode}
+\lhead{Advanced Algorithm}
+\rfoot{Page \thepage}
+
+% ********** ALGORITHMS **********
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+\SetKwInput{KwInput}{Input}                % Set the Input
+\SetKwInput{KwOutput}{Output}              % set the Output
+\renewcommand{\l}{$\ell$}
+\newcommand{\la}{$ \leftarrow $}
+
+\begin{document}
+	\begin{algorithm}[H]
+		\KwInput{X, Y}
+\tcc{
+Parameters :\\
+\tab X , Y : strings, we assume here that len(X) <= len(Y).\\
+Return :\\
+\tab ed : integer, optimal edit distance between X and Y.\\
+\tab alignment : array of instructions, to go from Y to X.\\
+}
+	n \la len(X)\;
+	m \la len(Y)\;
+	ed \la $ \infty $\;
+	\For{all possible combinaison 0$\leq$j$ \leq $i$\leq$min(n-m,$\lceil$m/2$\rceil$) s.t. i = j + (n-m)}{
+		str1 \la i*"-" + X\tcp{e.g. X= H E L L O , str1 = - H E L L O}
+		str2 \la Y + j*"-"\tcp{e.g. Y= H O L A, ~~~str2 = H O L A - -}
+		~\\
+		OR \tab\tcp{When all the possibilities are explored this way do it the other way.}
+		~\\
+		str1 \la X + i*"-"\tcp{e.g. X= H E L L O , str1 = H E L L O - -}
+		str2 \la j*"-" + Y\tcp{e.g. Y= H O L A, ~~~str2 = - - - H O L A}
+		~\\
+		ed\_tmp,alignment\_t \la greedy\_ed(str1,str2)\;
+		\If{ed > ed\_tmp}{
+			ed \la ed\_tmp\;
+			alignment \la alignment\_tmp\;
+		}
+	}
+	\For{0$\leq$i$\leq$n-m}{
+		str1 \la X							\tcp{e.g. X= B O N J O U R , str1 = B O N J O U R}
+		str2 \la (n-m-i)*"-" + Y + (i)*"-"	\tcp{e.g. Y= H O L A, ~~~~~~~str2 = - H O L A - -}
+		ed\_tmp,alignment\_t \la greedy\_ed(str1,str2)\;
+		\If{ed > ed\_tmp}{
+			ed \la ed\_tmp\;
+			alignment \la alignment\_tmp\;
+		}
+	}
+	\Return \{ed : ed , alignment : alignment\}
+	\caption{Greedy\_Approach\_Edit\_Distance}
+	\end{algorithm}	
+\newpage
+	\begin{algorithm}[H]
+		\KwInput{str1 , str2}
+\tcc{Check from left to right, 1 by 1 the letters of str1 and str2 to compare them.\\
+Parameters : \\
+\tab str1,str2 : srings of same length.\\
+Return : \\
+\tab not optimal edit\_distance and alignment, computed without modifying str1 or str2.}
+		ed \la 0\;
+		alignment \la []\;
+		\For{i in range(len(str1))}{
+			\If{str1[i] == str2[i]}{
+				alignment.append(["skip" , str1[i]])\;
+			}\ElseIf{str1[i] == "-"}{
+				alignment.append(["del" , str2[i]])\;
+			}\ElseIf{str2[i] == "-"}{
+				alignment.append(["add" , str1[i]])\;
+			}\Else{\tcp{str1[i] != str2[i]}
+				alignment.append(["sub" , str1[i]])\;
+			}
+		\Return \{ed : ed , alignment : alignment\}
+		}
+		\caption{greedy\_ed}
+	\end{algorithm}
+\end{document}

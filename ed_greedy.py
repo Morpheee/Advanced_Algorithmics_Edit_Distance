@@ -86,4 +86,5 @@ Return :
 			ed_align = new_ed_align
 	return ed_align
 
-print(edit_distance_greedy( x="HELLO" , y="HOLA" ))
+if __name__ == '__main__':
+	print(edit_distance_greedy( x="HELLO" , y="HOLA" ))

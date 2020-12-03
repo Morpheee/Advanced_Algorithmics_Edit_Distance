@@ -34,7 +34,6 @@ and the points have the smallest second coordinate possible.
 				if p[j][0] == q[i][0] : 
 					if p[j][1] > q[i][1] :
 						p[j] = q[i] #the points are : p[j]:=(a,b), q[i]:=(a,c) with b>c so must replace p[j] by q[i]
-						break
 				else :
 					p = p[:j] + [q[i]] + p[j:] #p[j]:=(a,b), p[j+1]:=(a',b'), q[i]=(c,d) and a<c<a' so must add q[i] in between p
 					j += 1
@@ -125,9 +124,9 @@ def divide_and_conquer_ed(x='',y='',l_x=0,l_y=0) :
 	"""
 Parameters :
 	x,y : strings, the two words we work with.
-	p : records the path for computing the alignement.
 	l_x and l_y are the true position -1 of x[0] and y[0] in the original words x and y,
 		needed in order to append the absolute value of the path in p in the deeper recursions.
+	p : records the path for computing the alignment.
 Return :
 	{'p' : p, 'ed' : ed} : dictionary containing :
 	p : the collection of points of interest to compute the alignment between x and y.
@@ -145,7 +144,6 @@ Return :
 	n=len(x)
 	m=len(y)
 	#initialize p to empty list
-	
 	if n < 1 or m < 2 :
 		if m == 1 and n > 1 : #edge case, if there is multiple letters in x but 1 in y. Add the index minimizing the row.
 			s = space_efficient_dp_ed(x,y) + np.arange(n,-1,-1)
@@ -177,14 +175,13 @@ Return :
 
 		if l_x+mini > 0 : #add the corresponding point to p. In absolute coordinate (regardin the original x and y words).
 			p = [(l_x+mini-1 , l_y+m//2-1)]
-		else:
+		else :
 			p = []
 
 
-		#call the algorithm recurcively with left part of x and y, and then with the right parts.
+		#call the algorithm recursively with left part of x and y, and then with the right parts.
 		p = concat(p , divide_and_conquer_ed(x[:mini] , y[:m//2] , l_x = l_x 		, l_y = l_y		)['p']  )	#top-left part of the array
-		p = concat(p , divide_and_conquer_ed(x[mini:] , y[m//2:] , l_x = l_x+mini , l_y = l_y+m//2)['p']	)	#bottom-right part of the array
-
+		p = concat(p , divide_and_conquer_ed(x[mini:] , y[m//2:] , l_x = l_x+mini 	, l_y = l_y+m//2)['p']	)	#bottom-right part of the array
 		return dict({'p' : p , 'ed' : ed})
 
 def view_array(x,y,p) :
@@ -244,12 +241,13 @@ Parameters :
 Return :
 	align : the alignment of x and y with following form : [['skip','X'],['del','B'],['del','C'],['skip','A'],['sub','D']]
 	'''
+	# print(p,x,y,sep="\n\n")
 	if len(x) > 0 and len(y) > 0 :
 		if p[0,0] == p[0,1] :
 			if x[0] == y[0] :
 				oprs = np.append(oprs,[['skip',y[0]]], axis=0)
 			else :
-				oprs = np.append(oprs,[['sub',y[0]]], axis=0)
+				oprs = np.append(oprs,[['sub',x[0]]], axis=0)
 			return view_operations(x[1:], y[1:], p[1:], oprs)
 		elif p[0,0] > p[0,1] :
 			oprs = np.append(oprs, [['add',x[0]]], axis=0)
@@ -279,10 +277,10 @@ output {'ed' : 'the optimal Edit Distance between x and y' , 'alignment' : 'an o
 Space complexity used is linear, it is equal to O(max(len(x),len(y))).
 	'''
 	p,ed = divide_and_conquer_ed(x,y).values()
-	# p = sort_n_clean(p)
+	print(p)
 
 	#uncomment next line to see the "array" of the alignment between x and y.
-	#view_array(x,y,p)
+	view_array(x,y,p)
 
 	#uncomment next line to output the alignment as follow [['X','X'],['-','B'],['-','C'],['A','A'],['A','D']].
 	# alignment = view_alignment(x,y,np.array(p))
@@ -293,8 +291,8 @@ Space complexity used is linear, it is equal to O(max(len(x),len(y))).
 	return {'ed' : ed, 'alignment' : alignment}
 
 if __name__ == '__main__' :
-	x = 'MAHSLGEQYDLGKPTEEHHESHPPAHQAPHAGGELGA'
-	y = 'MAEAQLRDQHGNPVPLTDQYGNPVILTDERGNPVQLT'
+	x = "HELLO"
+	y = "HOLA"
 	print(edit_distance_dnd_dp_linear_space(x,y))
 
 

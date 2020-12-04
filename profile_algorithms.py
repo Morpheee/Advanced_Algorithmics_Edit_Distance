@@ -42,7 +42,11 @@ if __name__ == '__main__':
     #5 sec of timeout
     timeout_time = 30
 
-    datasets_path = 'datasets'
+    try:
+        datasets_path = sys.argv[1]
+    except:
+        datasets_path = 'datasets'
+
     results_path = 'run_results'
 
     file_list = [f for f in listdir(datasets_path) if isfile(join(datasets_path, f))]
@@ -54,6 +58,8 @@ if __name__ == '__main__':
             rows_list = []
             for index,row in df.iterrows():
                 string_length = len(str(row['string_1']))
+                if string_length > 10:
+                    continue
 
                 #Divide and conquer
                 algorithm = 'divide_and_conquer'
@@ -124,8 +130,7 @@ if __name__ == '__main__':
                         ed = results[0]
                     rows_list.append({'algorithm':algorithm, 'len':string_length, 'ed':ed, 'time':duration_time,'clock_time':duration_clock, 'calls':1})
 
-                if index % 10 == 0:
-                    print(index)
+                print(index)
 
             result_df = pd.DataFrame(rows_list)
             result_df.to_csv(results_path+'/'+file_name,index=False)

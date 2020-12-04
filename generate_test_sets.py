@@ -37,8 +37,8 @@ destination_folder = 'datasets'
 
 
 #To be used with all
-#List of desired sizes (1-15, 20-100)
-sizes = [x for x in range(1,16)]
+#List of desired sizes (1-12, 20-100)
+sizes = [x for x in range(1,13)]
 for pair_type in ['samepair','atmost20','randompair']:
     for alphabet in alphabets:
         rows = []

@@ -103,6 +103,7 @@ def branch_bound_len_ed(string_a, string_b, cost=0, bound=0, operations=[]):
 
 
 
+
 """
 parameters:
     string_a: first string to compare
@@ -130,7 +131,6 @@ def branch_bound_cnt_ed(string_a, string_b, cost=0, bound=0, operations=[], freq
     #Setting bound if not existing
     if bound==0:
         bound = max(len_a,len_b)
-
         freq_a = {}
         for i in string_a: 
             if i in freq_a: 
@@ -172,24 +172,28 @@ def branch_bound_cnt_ed(string_a, string_b, cost=0, bound=0, operations=[], freq
     freq_cost = max(len_a,len_b) + cost - sum(freq.values())
     
     weight_substitution = freq_cost + (1 if string_a[0]!=string_b[0] and (string_a[0] in freq or string_b[0] in freq) else 0)
-    weight_deletion = freq_cost + (2 if string_b[0] in freq else 0)
-    weight_insertion = freq_cost + (2 if string_a[0] in freq else 0)
-    
-    if weight_substitution<0 or weight_deletion<0 or weight_insertion<0:
-        print(str(weight_substitution)+','+str(weight_deletion)+','+str(weight_insertion)+','+str(freq_cost)+','+str(cost)+','+str(max(len_a,len_b))+','+str(freq))
+    weight_deletion = freq_cost + (1 if string_b[0] in freq else 0)
+    weight_insertion = freq_cost + (1 if string_a[0] in freq else 0)
     
     #Substitution branch
     if weight_substitution <= bound:
         #Current characters are equal, so no operation needed
         freq_sub = freq.copy()
         if string_a[0] == string_b[0]:
-            freq_sub[string_a[0]] -= 1
+            if string_a[0] in freq_sub:
+                freq_sub[string_a[0]] -= 1
+                if freq_sub[string_a[0]] == 0:
+                    freq_sub.pop(string_a[0])
             sub_branch = branch_bound_cnt_ed(string_a[1:], string_b[1:], cost, bound, operations + [{'skp': string_a[0]}], freq_sub)
         else:
-            if string_a[0] in freq_sub and freq_sub[string_a[0]]>0:
+            if string_a[0] in freq_sub:
                 freq_sub[string_a[0]] -= 1
-            elif string_b[0] in freq_sub and freq_sub[string_b[0]]>0:
+                if freq_sub[string_a[0]] == 0:
+                    freq_sub.pop(string_a[0])
+            elif string_b[0] in freq_sub:
                 freq_sub[string_b[0]] -= 1
+                if freq_sub[string_b[0]] <= 0:
+                    freq_sub.pop(string_b[0])
             sub_branch = branch_bound_cnt_ed(string_a[1:], string_b[1:], cost+1, bound, operations + [{'sub': string_a[0]}], freq_sub)
         sub_cost = sub_branch['ed']
         calls += 1 + sub_branch['calls']
@@ -200,8 +204,10 @@ def branch_bound_cnt_ed(string_a, string_b, cost=0, bound=0, operations=[], freq
     #Deletion branch
     if weight_deletion <= bound:
         freq_del = freq.copy()
-        if string_b[0] in freq_del and freq_sub[string_b[0]]>0:
+        if string_b[0] in freq_del:
             freq_del[string_b[0]] -= 1
+            if freq_del[string_b[0]] <= 0:
+                freq_del.pop(string_b[0])
         del_branch = branch_bound_cnt_ed(string_a, string_b[1:], cost+1, bound, operations + [{'del': string_b[0]}], freq_del)
         del_cost = del_branch['ed']
         calls += 1 + del_branch['calls']
@@ -212,8 +218,10 @@ def branch_bound_cnt_ed(string_a, string_b, cost=0, bound=0, operations=[], freq
     #Insertion branch
     if weight_insertion <= bound:
         freq_ins = freq.copy()
-        if string_a[0] in freq_ins and freq_sub[string_a[0]]>0:
+        if string_a[0] in freq_ins:
             freq_ins[string_a[0]] -= 1
+            if freq_ins[string_a[0]] <= 0:
+                freq_ins.pop(string_a[0])
         ins_branch = branch_bound_cnt_ed(string_a[1:], string_b, cost+1, bound, operations + [{'ins': string_a[0]}], freq_ins)
         ins_cost = ins_branch['ed']
         calls += 1 + ins_branch['calls']

@@ -1,0 +1,106 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{enumerate}
+\usepackage{marvosym}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{fancyhdr}%entt/pdp
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{cancel}
+\usepackage{multicol}
+\usepackage{mdframed}
+%\usepackage{bbold}
+\usepackage[left=1.00cm, right=1.00cm, top=3.00cm, bottom=2.00cm]{geometry}
+\usepackage{chngcntr}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{stmaryrd}
+\usepackage{siunitx}
+
+
+
+\hypersetup{
+	colorlinks=true, %set true if you want colored links
+	linkcolor=black,
+}
+
+% ********** NEWCOMMAND **********
+\newcommand{\p}{\bullet}
+\newcommand{\tab}{\hspace*{0.5cm}}
+\newcommand{\tabb}[1][\hspace*{1cm}]{\hspace*{#1 cm}}
+\newcommand{\vtab}{\vspace*{0.2cm}}
+\newcommand{\vtabb}[1][\vspace*{0.2cm}]{\vspace*{#1cm}}
+
+
+% ********** ENTETE/PIED DE PAGE **********
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Pseudocode}
+\lhead{Advanced Algorithm}
+\rfoot{Page \thepage}
+
+% ********** ALGORITHMS **********
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+\SetKwInput{KwInput}{Input}                % Set the Input
+\SetKwInput{KwOutput}{Output}              % set the Output
+\renewcommand{\l}{$\ell$}
+\newcommand{\la}{$ \leftarrow $}
+
+\begin{document}
+	\begin{algorithm}[H]
+		%\DontPrintSemicolon
+		\KwInput{S1 , S2}
+\tcc{
+Parameters :\\
+	\tab s1,s2 : strings.\\
+Return :\\
+	\tab ED, alignment
+}
+\Begin{
+n \la len(s1) ; m \la len(s2)\\
+\textbf{define}~dist\_mat~:~array~with~first~row~0~to~m~and~first~column~0~to~n\\
+\textbf{define}~alignment~:~empty~array\\
+\If{(s1 == s2)}	
+{
+ \Return{\{"ed" : 0 , "alignment" : "match"~for~all~letter \}}\;
+}
+\Else 
+{
+ \For {j \la 1 to m+1}
+ {
+    \For {i \la 1 to n+1}
+     {
+       \If {s1[i-1] == s2[j-1]} 
+         {
+           dist\_mat[j,i] = dist\_mat[j-1 , i-1]\tcp{"keep" this letter}
+       		}
+          }
+ \Else {
+ 	dist\_mat[j,i] = 1+min$
+ 	\begin{cases}
+ 	\text{dist\_mat[j,i-1]} \tcp{"remove" letter}\\
+ 	\text{dist\_mat[j-1,i]} \tcp{"add" letter}\\
+ 	\text{dist\_mat[j-1,i-1]} \tcp{"substitute" letter}
+ 	\end{cases}$
+}
+}
+}
+alignment \la retrieve~alignment~by~backtracking~dist\_mat\;
+\Return{\{"ed" : ed , "alignment" : alignment \}}\;
+}
+	\end{algorithm}
+\end{document}

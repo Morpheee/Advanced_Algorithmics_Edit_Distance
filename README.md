@@ -16,3 +16,4 @@ Advanced Algorithmics Project : Implement and compare multiple algorithms to com
 
 ## Valuable links
 *  [Project Timeline](https://docs.google.com/spreadsheets/d/1clz2PUolKHF0XG3UxLsR492nO4XVyJyr2cvgAf0jfMU/)
+*  [Results Presentation](https://docs.google.com/presentation/d/1sFUPgOPNs3hGbP2az_HEgE_kv3dLk6ce2vu1rcdVDLc/)

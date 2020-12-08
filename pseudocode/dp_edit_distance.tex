@@ -95,12 +95,13 @@ n \la len(s1) ; m \la len(s2)\\
  	\text{dist\_mat[j,i-1]} \tcp{"remove" letter}\\
  	\text{dist\_mat[j-1,i]} \tcp{"add" letter}\\
  	\text{dist\_mat[j-1,i-1]} \tcp{"substitute" letter}
- 	\end{cases}$
+ 	\end{cases}$\;
 }
 }
 }
 alignment \la retrieve~alignment~by~backtracking~dist\_mat\;
-\Return{\{"ed" : ed , "alignment" : alignment \}}\;
+\Return{\{"ed" : dist_mat[-1,-1] , "alignment" : alignment \}}\;
 }
+    \caption{Dynamic\_programming\_single\_matrix}
 	\end{algorithm}
 \end{document}

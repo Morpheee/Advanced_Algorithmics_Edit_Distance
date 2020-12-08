@@ -1,0 +1,221 @@
+% **** ALGORITHMS ****
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{enumerate}
+\usepackage{marvosym}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{fancyhdr}%entt/pdp
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{cancel}
+\usepackage{multicol}
+\usepackage{mdframed}
+%\usepackage{bbold}
+%\usepackage[left=1.00cm, right=1.00cm, top=3.00cm, bottom=2.00cm]{geometry}
+\usepackage{chngcntr}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{stmaryrd}
+\usepackage{siunitx}
+
+
+
+\hypersetup{
+	colorlinks=true, %set true if you want colored links
+	linkcolor=black,
+}
+
+% ********** NEWCOMMAND **********
+
+% ********** COMMANDS **********
+\newcommand{\tab}{\hspace*{0.5cm}}
+\newcommand{\tabb}[1][\hspace*{1cm}]{\hspace*{#1 cm}}
+
+
+
+% ********** ENTETE/PIED DE PAGE **********
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Pseudocode}
+\lhead{Advanced Algorithm}
+\rfoot{Page \thepage}
+
+% ********** ALGORITHMS **********
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+\SetKwInput{KwInput}{Input}                % Set the Input
+\SetKwInput{KwOutput}{Output}              % set the Output
+\renewcommand{\l}{$\ell$}
+\newcommand{\la}{$ \leftarrow $}
+
+\begin{document}
+	\begin{algorithm}[H]
+		%\DontPrintSemicolon
+
+		\KwInput{X,Y, cost, bound}
+		\KwOutput{edit\_distance}
+		\Begin{
+			\tcc{Initialize variables}
+			n \la len(X)\
+			m \la len(Y)\
+			
+			\tcc{Manage edge cases}
+
+			\If{n == 0 and m == 0}
+			{
+				\Return 0
+			}
+			\If{n == 0}
+			{
+				\Return m
+			}
+			\If{m == 0}
+			{
+				\Return n
+			}
+			
+			\tcc{Calculate BnB weights}
+			
+			$
+			\text{weight}_\text{substitution} = calculate\_weigth\_substitution() + cost
+			$
+			$
+			\text{weight}_\text{deletion} = calculate\_weigth\_deletion() + cost
+			$
+			$
+			\text{weight}_\text{insertion} = calculate\_weigth\_insertion() + cost
+			$
+			
+			\tcc{Explore branches}
+			
+			\If{$\text{weight}_\text{substitution}$ <= bound}
+			{
+				$cost_{substitution}$ = Calculate \l[X-1 , Y-1]\
+				$bound = min(bound, cost_{substitution})$
+			}
+
+			\If{$\text{weight}_\text{deletion}$ <= bound}
+			{
+				$cost_{deletion}$ = Calculate \l[X , Y-1]\
+				$bound = min(bound, cost_{deletion})$
+			}
+			
+			\If{$\text{weight}_\text{insertion}$ <= bound}
+			{
+				$cost_{insertion}$ = Calculate \l[X-1 , Y]\
+				$bound = min(bound, cost_{insertion})$
+			}			
+			\tcc{Return minimum of the explored branches}
+			edit\_distance =  $\min$ \begin{tabular}{|l}
+			$cost_{substitution}$\\$cost_{deletion}$\\$cost_{insertion}$
+			\end{tabular}			
+		}
+		
+%		\caption{Edit\_Distance-Branch\_and\_Bound}
+	\end{algorithm}
+	\vspace*{2cm}
+
+	\pagebreak
+
+	\begin{algorithm}[H]
+		%\DontPrintSemicolon
+
+		\KwInput{X,Y}
+		\KwOutput{weight}
+		\Begin{
+
+			n \la len(X)\
+			m \la len(Y)\
+
+			$
+			\text{weight}_\text{substitution} = abs(m - n)
+			$
+			\\
+			$
+			\text{weight}_\text{deletion} = abs(m - n - 1)
+			$
+			\\			
+			$
+			\text{weight}_\text{insertion} = abs(n - m - 1)
+			$
+			
+		}
+		
+%		\caption{Length\_Heuristic-Branch\_and\_Bound}
+	\end{algorithm}
+	\vspace*{2cm}
+
+	\pagebreak
+
+	\begin{algorithm}[H]
+		%\DontPrintSemicolon
+
+		\KwInput{X,Y}
+		\KwOutput{weight}
+		\Begin{
+
+			n \la len(X)\
+			m \la len(Y)\
+			
+			\tcc{Create dictionary with common letter count}
+			letter\_frequency = common\_letters(X,Y)
+
+			\tcc{Variables used to calculate weights}
+			common\_count = sum(letter\_frequency)
+			\\
+			\If{X[0] in letter\_frequency}
+			{
+				X\_Look\_Ahead = 1
+			}
+			\Else
+			{
+				X\_Look\_Ahead = 0
+			}
+			\If{Y[0] in letter\_frequency}
+			{
+				Y\_Look\_Ahead = 1
+			}
+			\Else
+			{
+				Y\_Look\_Ahead = 0
+			}
+			\If{X[0] == Y[0] and (Y[0] in letter\_frequency or X[0] in letter\_frequency)}
+			{
+				Common\_Ahead = 1
+			}
+			\Else
+			{
+				Common\_Ahead = 0
+			}
+			$
+			\text{weight}_\text{substitution} = max(m,n) - common\_count + Common\_Ahead
+			$
+			\\
+			$
+			\text{weight}_\text{deletion} = max(m,n) - common\_count + Y\_Look\_Ahead
+			$
+			\\			
+			$
+			\text{weight}_\text{insertion} = max(m,n) - common\_count + X\_Look\_Ahead
+			$			
+		}
+		
+%		\caption{Letter\_Frequency\_Heuristic-Branch\_and\_Bound}
+	\end{algorithm}
+	\vspace*{2cm}
+
+\end{document}

@@ -13,3 +13,6 @@ Advanced Algorithmics Project : Implement and compare multiple algorithms to com
 *  [Protein dataset and a test sets generated from it](protein_dataset)
 *  [Results of clustering the proteins in a graph](graphs_profiler)
 *  [Results of the protein tests](protein_results)
+
+## Valuable links
+*  [Project Timeline](https://docs.google.com/spreadsheets/d/1clz2PUolKHF0XG3UxLsR492nO4XVyJyr2cvgAf0jfMU/)
